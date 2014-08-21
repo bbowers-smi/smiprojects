@@ -1,4 +1,5 @@
 @CHARSET "ISO-8859-1";
+@import url(http://fonts.googleapis.com/css?family=Covered+By+Your+Grace);
 * {
 	padding: 0px;
 	margin: 0px;
@@ -114,3 +115,9 @@ fieldset ul li {
 	line-height: 35px;
 	margin: 0 0 0 10px;
 }
+
+#chartdiv {background: #282828 url('charts/patterns/chalk/bg.jpg');color: #fff;
+	width		: 100%;
+	height		: 500px;
+	font-size	: 11px;
+}		

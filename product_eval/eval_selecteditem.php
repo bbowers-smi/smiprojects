@@ -38,7 +38,7 @@ if($conn){
 
 <title>Product Evaluation Filters</title>
 </head>
-<body>
+<body onload="buildCharts()">
 <div id="menu">
 <p>To look at the results for, first select the hospital then select the item.</p>
 <form name="filtered" action="buildresults.php" method="post">
@@ -61,6 +61,8 @@ if($conn){
 	
 </table>
 </form>
+<div id="chartdiv"></div>
+
 </div>
 <script type="text/javascript">
 function getitems(){
