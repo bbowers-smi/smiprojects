@@ -116,7 +116,7 @@ fieldset ul li {
 	margin: 0 0 0 10px;
 }
 
-#chartdiv {background: #282828 url('charts/patterns/chalk/bg.jpg');color: #fff;
+#chartdiv {
 	width		: 100%;
 	height		: 500px;
 	font-size	: 11px;

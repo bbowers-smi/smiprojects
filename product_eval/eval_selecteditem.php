@@ -34,7 +34,7 @@ if($conn){
 <script type="text/javascript" src="js/jquery.cookie.js"></script>
 <script type="text/javascript" src="charts/amcharts.js"></script>
 <script type="text/javascript" src="charts/pie.js"></script>
-<script type="text/javascript" src="charts/themes/chalk.js"></script>
+<script type="text/javascript" src="charts/themes/none.js"></script>
 
 <title>Product Evaluation Filters</title>
 </head>
@@ -95,24 +95,41 @@ function getresults(){
 }
 
 function buildCharts(){
-var chart = AmCharts.makeChart("chartdiv", {
-    "type": "pie",
-    "theme": "chalk",
-    "dataProvider": [{
-        "title": "New",
-        "value": 4852
-    }, {
-        "title": "Returning",
-        "value": 9899
-    }],
-    "titleField": "title",
-    "valueField": "value",
-    "labelRadius": 5,
-
-    "radius": "42%",
-    "innerRadius": "60%",
-    "labelText": "[[title]]"
-});
+	var chart = AmCharts.makeChart("chartdiv", {
+	    "type": "pie",
+	    "theme": "none",
+	    "dataProvider": [{
+	        "country": "Lithuania",
+	        "value": 260
+	    }, {
+	        "country": "Ireland",
+	        "value": 201
+	    }, {
+	        "country": "Germany",
+	        "value": 65
+	    }, {
+	        "country": "Australia",
+	        "value": 39
+	    }, {
+	        "country": "UK",
+	        "value": 19
+	    }, {
+	        "country": "Latvia",
+	        "value": 10
+	    }],
+	    "valueField": "value",
+	    "titleField": "country",
+	    "outlineAlpha": 0.4,
+	    "depth3D": 15,
+	    "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+	    "angle": 30,
+	    "exportConfig":{	
+	      menuItems: [{
+	      icon: 'charts/images/export.png',
+	      format: 'png'	  
+	      }]  
+		}
+	});
 }
 </script>
 </body>
