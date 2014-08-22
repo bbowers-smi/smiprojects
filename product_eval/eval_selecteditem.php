@@ -38,7 +38,7 @@ if($conn){
 
 <title>Product Evaluation Filters</title>
 </head>
-<body onload="buildCharts()">
+<body>
 <div id="menu">
 <p>To look at the results for, first select the hospital then select the item.</p>
 <form name="filtered" action="buildresults.php" method="post">
@@ -94,43 +94,7 @@ function getresults(){
 	document.filtered.submit();	
 }
 
-function buildCharts(){
-	var chart = AmCharts.makeChart("chartdiv", {
-	    "type": "pie",
-	    "theme": "none",
-	    "dataProvider": [{
-	        "country": "Lithuania",
-	        "value": 260
-	    }, {
-	        "country": "Ireland",
-	        "value": 201
-	    }, {
-	        "country": "Germany",
-	        "value": 65
-	    }, {
-	        "country": "Australia",
-	        "value": 39
-	    }, {
-	        "country": "UK",
-	        "value": 19
-	    }, {
-	        "country": "Latvia",
-	        "value": 10
-	    }],
-	    "valueField": "value",
-	    "titleField": "country",
-	    "outlineAlpha": 0.4,
-	    "depth3D": 15,
-	    "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
-	    "angle": 30,
-	    "exportConfig":{	
-	      menuItems: [{
-	      icon: 'charts/images/export.png',
-	      format: 'png'	  
-	      }]  
-		}
-	});
-}
+
 </script>
 </body>
 </html>
