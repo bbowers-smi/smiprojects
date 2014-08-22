@@ -32,6 +32,7 @@ $comm1 = substr($comments,0,64);
 $comm2 = substr($comments,64);
 echo $comm1."<br />";
 echo $comm2."<br />";
+
 for($i=1;$i<=$nbr_of_questions;$i++){
 	
 	$eval[$i] = $_POST['eval'.$i];	

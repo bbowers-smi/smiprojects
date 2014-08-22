@@ -88,12 +88,13 @@ For each of the following statements about the product, please indicate your opi
 </tr>
 <?php 
 $questionctr = 1;
+
 foreach($questions as $key=>$value){
 	echo "<tr>";
 	echo "<td class=\"firstcol\">".trim($value)."</td>";
 	echo "<td colspan=\"2\">&nbsp;</td>";
-	echo "<td><input type=\"radio\" name=\"eval".$questionctr."\" value=\"Y\" ></input></td>";
-	echo "<td><input type=\"radio\" name=\"eval".$questionctr."\" value=\"N\" ></input></td>";
+	echo "<td><input type=\"radio\" name=\"eval".$key."\" value=\"Y\" ></input></td>";
+	echo "<td><input type=\"radio\" name=\"eval".$key."\" value=\"N\" ></input></td>";
 	echo "</tr>";
 	$questionctr++;
 }
