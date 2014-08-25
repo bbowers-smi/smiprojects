@@ -116,8 +116,16 @@ fieldset ul li {
 	margin: 0 0 0 10px;
 }
 
-#chartdiv {
+#chartarea {
 	width		: 100%;
-	height		: 500px;
+	height		: 400px;
 	font-size	: 11px;
-}		
+}
+
+#chartmain {
+	position: relative;
+	top: 100px;
+}
+td[id^="chart"]{
+	border: 2px solid black; 
+}

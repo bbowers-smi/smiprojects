@@ -15,105 +15,102 @@
 <title>Product Evaluation Filters</title>
 </head>
 <body>
+<div id="chartmain">
+<script>
+$(document).ready(function(){
+	createCharts();
+	
+});
+</script>
 <?php
-session_start();
+
 $conn = db2_connect('S106B0CP', 'phpuser', 'phpusri7');
 if($conn){
-$hospital = $_POST['facility'];
-$item = $_POST['thisitem'];
+	$hospital = $_POST['facility'];
+	$item = $_POST['thisitem'];
 
-$questnbr = "select count(*) as nbrquestions from r50modsdta.prdstmt where stmtdel = 'A'";
-$questrs = db2_exec($conn, $questnbr);
-if($questrs){
-	$row = db2_fetch_assoc($questrs);
-	$nbrquestions = (int)$row['NBRQUESTIONS'];
-}else{
-	die("Failed getting number of questions.".db2_stmt_errormsg());
-}
-echo "Questions ".$nbrquestions;
-$nrows = (int)($nbrquestions/2);
-$extrarow = (int)$nbrquestions%2;
-echo "<input type=\"hidden\" name=\"nrows\" value=".($nrows)." ></input>";
-echo "<input type=\"hidden\" name=\"extras\" value=".($extrarow)." ></input>";
-$nbrstmt = "select count(*) as totalstmt from r50modsdta.prdstmt";
-$stmtresult = db2_exec($conn,$nbrstmt);
-if($stmtresult){
-   $rs = db2_fetch_array($stmtresult,0);
-   $total_questions = $rs[0];
-}
+	$questnbr = "select count(*) as nbrquestions from r50modsdta.prdstmt where stmtdel = 'A'";
+	$questrs = db2_exec($conn, $questnbr);
+	if($questrs){
+		$row = db2_fetch_assoc($questrs);
+		$nbrquestions = (int)$row['NBRQUESTIONS'];
+	}else{
+		die("Failed getting number of questions.".db2_stmt_errormsg());
+	}
 
-$qry = "select stmtid,evalchoic from r50modsdta.prdeval where facname='".$hospital."' and evalitem='".$item."' order by stmtid,evalchoic";
+	$nrows = $nbrquestions;
 
-$stmt = db2_exec($conn, $qry);
-if($stmt){
-  while($row=db2_fetch_assoc($stmt)){
-	print_r($row);
-	echo "<br />";
-}
-}
-}else{
-	echo db2_conn_errormsg();
-}
+	echo "<input type=\"hidden\" name=\"nrows\" value=".($nrows)." ></input>";
+	}else{
+	die("Failed to get connection for charts");
+	}
 ?>
 <div id="chartarea">
-<div id="col1">
-</div>
-<div id="col2">
+<?php 
+$tbl_rows = (int)$nrows/2;
+$final_row = (int)$nrows%2;
+?>
+<table>
+<?php 
+$j = 1;
+for($i=1;$i<=$tbl_rows;$i++){
+	
+	echo "<tr>";
+	echo "<td id='chart".$j."'></td>";
+	echo "<td id='chart".($j+1)."'></td>";
+	echo "</tr>";
+	$j+=2;
+}
+if($final_row == 1){
+	echo "<tr>";
+	echo "<td ></td>";
+	echo "<td ></td>";
+	echo "</tr>";
+}
+?> 
+</table>
 </div>
 </div>
 <script type="text/javascript">
-buildChartDivs();
 
-function buildChartDivs(){
-	var ndiv = $('input[name="nrows"]').val();
-	var extdiv = $('input[name="extras"]').val();
-	var cellctr = 1;
+function createCharts(){
 	
-	var newhtml=("div id='chart"+cellctr+"'");
-	
-	if(cellctr%2 == 0){
-		$('#col1').html(newhtml);
-	}
-	if(cellctr%2 == 1){
-		$('#col2').html(newhtml);
-	}
-function buildCharts(){
-	var chart = AmCharts.makeChart("chartdiv", {
+	var chart = AmCharts.makeChart("chart1", {
 	    "type": "pie",
-	    "theme": "none",
-	    "dataProvider": [{
+	    "theme": "light",
+	    "dataProvider": [
+	{
 	        "country": "Lithuania",
-	        "value": 260
+	        "litres": 501.9
+	    },
+	{
+	        "country": "Czech Republic",
+	        "litres": 301.9
 	    }, {
 	        "country": "Ireland",
-	        "value": 201
+	        "litres": 201.1
 	    }, {
 	        "country": "Germany",
-	        "value": 65
+	        "litres": 165.8
 	    }, {
 	        "country": "Australia",
-	        "value": 39
+	        "litres": 139.9
+	    }, {
+	        "country": "Austria",
+	        "litres": 128.3
 	    }, {
 	        "country": "UK",
-	        "value": 19
+	        "litres": 99
 	    }, {
-	        "country": "Latvia",
-	        "value": 10
+	        "country": "Belgium",
+	        "litres": 60
+	    }, {
+	        "country": "The Netherlands",
+	        "litres": 50
 	    }],
-	    "valueField": "value",
-	    "titleField": "country",
-	    "outlineAlpha": 0.4,
-	    "depth3D": 15,
-	    "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
-	    "angle": 30,
-	    "exportConfig":{	
-	      menuItems: [{
-	      icon: 'charts/images/export.png',
-	      format: 'png'	  
-	      }]  
-		}
+	    "valueField": "litres",
+	    "titleField": "country"
 	});
-}
 }
 </script>
 </body>
