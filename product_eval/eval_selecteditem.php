@@ -34,14 +34,29 @@ if($conn){
 <script type="text/javascript" src="js/jquery.cookie.js"></script>
 <script type="text/javascript" src="charts/amcharts.js"></script>
 <script type="text/javascript" src="charts/pie.js"></script>
-<script type="text/javascript" src="charts/themes/none.js"></script>
 
 <title>Product Evaluation Filters</title>
+<style>
+#chartmain {
+	width: 600px;
+	margin: 10px auto;
+}
+#chartwrapper {
+	position: relative;
+	width: 600px;
+	height: 100px;
+}
+#charttable td {
+	width: 300px;
+	height: 300px;
+	padding: 5px;
+}
+</style>
 </head>
 <body>
 <div id="menu">
 <p>To look at the results for, first select the hospital then select the item.</p>
-<form name="filtered" action="buildresults.php" method="post">
+<form name="filtered" action="" method="post">
 <table>
 	<tr>
 		<th>Facility</th>
@@ -52,7 +67,7 @@ if($conn){
 		<option value="None">Select Hospital...</option>
 		<?php 
 		foreach($hospital_list as $key=>$value){
-			echo "<option value=\"".$value."\">".$value."</option>";
+			echo "<option value=\"".trim($value)."\">".trim($value)."</option>";
 			}
 		?>
 		</select></td>
@@ -61,7 +76,13 @@ if($conn){
 	
 </table>
 </form>
-<div id="chartdiv"></div>
+<div id="chartsect">
+<?php 
+if(isset($_POST['facility']) && isset($_POST['thisitem'])){
+include 'buildresults.php';
+}
+?>
+</div>
 
 </div>
 <script type="text/javascript">
@@ -83,7 +104,7 @@ function getitems(){
 					});
 			    
 				itemdropdown+="</select>";
-				console.log(itemdropdown);
+				
 				$('td.itmlst').html(itemdropdown);
 			}
 	    

@@ -1,21 +1,3 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-<meta charset="UTF-8">
-<link rel="stylesheet" type="text/css" href="css/main.css"/>
-<link rel="stylesheet" type="text/css" href="css/jquery-ui-1.11.0.custom/jquery-ui.min.css"/>
-
-<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="js/jquery.cookie.js"></script>
-<script type="text/javascript" src="charts/amcharts.js"></script>
-<script type="text/javascript" src="charts/pie.js"></script>
-
-<title>Product Evaluation Filters</title>
-</head>
-<body>
-<div id="chartmain">
 <script>
 $(document).ready(function(){
 	createCharts();
@@ -24,37 +6,44 @@ $(document).ready(function(){
 </script>
 <?php
 
-$conn = db2_connect('S106B0CP', 'phpuser', 'phpusri7');
+//$conn = db2_connect($host, $user, $password);
 if($conn){
 	$hospital = $_POST['facility'];
 	$item = $_POST['thisitem'];
-
-	$questnbr = "select count(*) as nbrquestions from r50modsdta.prdstmt where stmtdel = 'A'";
+    $nbrquestions = 0;
+	$questnbr = "select stmttxt from r50modsdta.prdstmt where stmtdel = 'A'";
 	$questrs = db2_exec($conn, $questnbr);
 	if($questrs){
-		$row = db2_fetch_assoc($questrs);
-		$nbrquestions = (int)$row['NBRQUESTIONS'];
+     while($row = db2_fetch_assoc($questrs)){
+		$question_text[] = $row['STMTTXT'];
+		$nbrquestions += 1;
+		}
 	}else{
 		die("Failed getting number of questions.".db2_stmt_errormsg());
 	}
 
 	$nrows = $nbrquestions;
-
+	
 	echo "<input type=\"hidden\" name=\"nrows\" value=".($nrows)." ></input>";
 	}else{
 	die("Failed to get connection for charts");
 	}
 ?>
-<div id="chartarea">
+
 <?php 
 $tbl_rows = (int)$nrows/2;
 $final_row = (int)$nrows%2;
 ?>
-<table>
+<div id="chartmain">
+  <div id="chartwrapper">
+<table id="charttable">
 <?php 
 $j = 1;
 for($i=1;$i<=$tbl_rows;$i++){
-	
+	echo "<tr>";
+	echo "<th>".$question_text[$i-1]."</th>";
+	echo "<th>".$question_text[$i]."</th>";
+	echo "</tr>";
 	echo "<tr>";
 	echo "<td id='chart".$j."'></td>";
 	echo "<td id='chart".($j+1)."'></td>";
@@ -71,47 +60,40 @@ if($final_row == 1){
 </table>
 </div>
 </div>
+<?php 
+  $questqry = "select e.stmtid,e.evalchoic,s.stmttxt from r50modsdta.prdeval e
+		left outer join r50modsdta.prdstmt s on s.stmtid=e.stmtid
+		where e.facname='".$hospital."' and e.evalitem='".$item."' order by e.evalchoic";
+  $qryrs = db2_exec($conn, $questqry);
+  if($qryrs){
+	
+}else{
+	die("Unable to query eval file".db2_stmt_errormsg());
+}
+?>
 <script type="text/javascript">
 
 function createCharts(){
-	
-	var chart = AmCharts.makeChart("chart1", {
+	var getnbrcharts = $('input[name="nrows"]').val();
+	for(i=1;i<=getnbrcharts;i++){
+		var chartname = "chart"+i;
+	var chart = AmCharts.makeChart(chartname, {
 	    "type": "pie",
-	    "theme": "light",
 	    "dataProvider": [
 	{
-	        "country": "Lithuania",
-	        "litres": 501.9
+	        "preference": "Yes",
+	        "nbrprefer": 5
 	    },
 	{
-	        "country": "Czech Republic",
-	        "litres": 301.9
-	    }, {
-	        "country": "Ireland",
-	        "litres": 201.1
-	    }, {
-	        "country": "Germany",
-	        "litres": 165.8
-	    }, {
-	        "country": "Australia",
-	        "litres": 139.9
-	    }, {
-	        "country": "Austria",
-	        "litres": 128.3
-	    }, {
-	        "country": "UK",
-	        "litres": 99
-	    }, {
-	        "country": "Belgium",
-	        "litres": 60
-	    }, {
-	        "country": "The Netherlands",
-	        "litres": 50
-	    }],
-	    "valueField": "litres",
-	    "titleField": "country"
+	        "preference": "No",
+	        "nbrprefer": 3 }],
+	        "radius":"25%",
+	        "labelRadius":4,
+	    "valueField": "nbrprefer",
+	    "titleField": "preference"
 	});
+	}
+	
 }
+
 </script>
-</body>
-</html>
