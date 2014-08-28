@@ -34,18 +34,20 @@ echo $comm1."<br />";
 echo $comm2."<br />";
 
 for($i=1;$i<=$nbr_of_questions;$i++){
+	if(isset($_POST['eval'.$i])){
+		
+	$eval[$i] = $_POST['eval'.$i];
 	
-	$eval[$i] = $_POST['eval'.$i];	
 //Add record
 $insrec = "insert into r50modsdta.prdeval (PRDEDEL,PRDEUID,PRDUID,EVALITEM,EVLRNAME,EVALDATE,FACNAME,DEPTNAME,STMTID,EVALCHOIC,ADDCOMM1,ADDCOMM2) values('A',".$evalid.",'".$usrlogin."','".$seneca_item."','
-".$repname."','".$evaluation_date."','".strtoupper($facility)."','".$department."',".$i.",'".$eval[$i]."','".$comm1."','".$comm2."')";
+".trim($repname)."','".$evaluation_date."','".strtoupper($facility)."','".$department."',".$i.",'".$eval[$i]."','".$comm1."','".$comm2."')";
 $inseval = db2_exec($conn,$insrec);
 echo $insrec;
 if(!$inseval){
 	
 	die("Error inserting evaluation. ".db2_stmt_errormsg());
 }
-
+	}
 }
 }else{
 	echo db2_conn_errormsg();

@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <?php
+include_once 'logging.php';
+
+$log = new Logging();
+$log->lfile('/www/salessvr/htdocs/product_eval/logs/evallog.txt');
 $user = 'PHPUSER';
 $password = 'phpusri7';
 
@@ -20,6 +24,11 @@ if($conn){
 	}
 }else{
 	die("Unable to establish DB connection".db2_conn_errormsg());
+}
+$hospital = "";
+if(isset($_POST['facility'])){
+	$hospital = $_POST['facility'];
+	
 }
 ?>
 <html>
@@ -49,14 +58,15 @@ if($conn){
 #charttable td {
 	width: 300px;
 	height: 300px;
-	padding: 5px;
 }
 </style>
 </head>
 <body>
 <div id="menu">
-<p>To look at the results for, first select the hospital then select the item.</p>
+<p>Select the facility, then select the item to review.</p>
+<p><a href="prodeval_menu.php" class="btn-style">Main Menu</a></p>
 <form name="filtered" action="" method="post">
+
 <table>
 	<tr>
 		<th>Facility</th>
@@ -67,7 +77,13 @@ if($conn){
 		<option value="None">Select Hospital...</option>
 		<?php 
 		foreach($hospital_list as $key=>$value){
+
+			if($hospital == trim($value)){
+				echo "<option value=\"".trim($value)."\" selected>".trim($value)."</option>";
+				
+			}else{
 			echo "<option value=\"".trim($value)."\">".trim($value)."</option>";
+			}
 			}
 		?>
 		</select></td>
@@ -75,10 +91,14 @@ if($conn){
 	</tr>
 	
 </table>
+
 </form>
 <div id="chartsect">
 <?php 
 if(isset($_POST['facility']) && isset($_POST['thisitem'])){
+$hospital = $_POST['facility'];
+$item = $_POST['thisitem'];
+
 include 'buildresults.php';
 }
 ?>
@@ -95,7 +115,7 @@ function getitems(){
 			dataType: 'json',
 			data:{hospital: hospital},
 			success: function(response){
-				console.log(response.item);
+				
 				var itemdropdown = "<select name='thisitem' onchange='getresults()'>";
 				itemdropdown+="<option value=0>Select Item...</option>";
 				$.map(response.item,function(value){
@@ -117,5 +137,10 @@ function getresults(){
 
 
 </script>
+<?php 
+if($hospital != ""){
+echo "<script>window.onload=getitems();</script>";
+}
+?>
 </body>
 </html>

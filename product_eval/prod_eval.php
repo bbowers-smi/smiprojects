@@ -96,9 +96,9 @@ foreach($questions as $key=>$value){
 	echo "<td><input type=\"radio\" name=\"eval".$key."\" value=\"Y\" ></input></td>";
 	echo "<td><input type=\"radio\" name=\"eval".$key."\" value=\"N\" ></input></td>";
 	echo "</tr>";
-	$questionctr++;
+	$questionctr = $key;
 }
-echo "<input type=\"hidden\" name=\"nbrquestions\" value=".($questionctr-1)." ></input>";
+echo "<input type=\"hidden\" name=\"nbrquestions\" value=".($questionctr)." ></input>";
 ?>
 </table>
 </div>
@@ -109,6 +109,7 @@ Additional Comments:</span><br />
 <textarea rows="4" cols="60" name="comments"></textarea>
 </p>
 <input class="btn-style" type="button" name="btn" value="Submit" onclick="submitItem()" ></input>
+<a href="prodeval_menu.php" class="btn-style">Main Menu</a>
 </div>
 </form>
 </div>

@@ -14,7 +14,7 @@
 </head>
 <body>
 <div id="menu">
-<div id="heading">Some heading junk</div>
+<div id="heading"><img src="images/logo.png"/></div>
 <fieldset>
 <legend>Product Evaluation Menu</legend>
 <ul>
