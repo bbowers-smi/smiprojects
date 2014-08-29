@@ -35,7 +35,12 @@ if($conn){
 $tbl_rows = (int)$nrows/2;
 $final_row = (int)$nrows%2;
 ?>
+<p>
+<span style="font: italic 20px Calibri,Helvetica,sans-serif;position: relative;top: 50px;">
+Hospital Selected:<br /><?php echo $_POST['facility']?><br />
+Results for Seneca Item <?php echo $_POST['thisitem'];?></span></p>
 <div id="chartmain">
+
   <div id="chartwrapper">
 <table id="charttable">
 <?php 

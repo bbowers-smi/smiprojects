@@ -64,10 +64,10 @@ if(isset($_POST['facility'])){
 <body>
 <div id="menu">
 <p>Select the facility, then select the item to review.</p>
-<p><a href="prodeval_menu.php" class="btn-style">Main Menu</a></p>
+<p><a href="prodeval_menu.php" class="btn-style">Main Menu</a><a href="#" class="btn-style" onclick="printscreen();">Print</a></p>
 <form name="filtered" action="" method="post">
 
-<table>
+<table id="filters">
 	<tr>
 		<th>Facility</th>
 		<th>Seneca Item</th>
@@ -75,6 +75,7 @@ if(isset($_POST['facility'])){
 	<tr>
 		<td><select name="facility" id="facility" onchange="getitems();">
 		<option value="None">Select Hospital...</option>
+		<option value="ALL">All Hospitals</option>
 		<?php 
 		foreach($hospital_list as $key=>$value){
 
@@ -87,12 +88,14 @@ if(isset($_POST['facility'])){
 			}
 		?>
 		</select></td>
+		<td>&nbsp;</td>
 		<td class="itmlst"></td>
 	</tr>
 	
 </table>
 
 </form>
+
 <div id="chartsect">
 <?php 
 if(isset($_POST['facility']) && isset($_POST['thisitem'])){
@@ -142,5 +145,13 @@ if($hospital != ""){
 echo "<script>window.onload=getitems();</script>";
 }
 ?>
+<script type="text/javascript">
+function printscreen(){
+	$('.btn-style,table#filters,#menu>p').toggle();
+	
+	window.print();
+	$('.btn-style,table#filters,#menu>p').toggle();
+}
+</script>
 </body>
 </html>
