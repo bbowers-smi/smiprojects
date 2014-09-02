@@ -37,8 +37,27 @@ $final_row = (int)$nrows%2;
 ?>
 <p>
 <span style="font: italic 20px Calibri,Helvetica,sans-serif;position: relative;top: 50px;">
-Hospital Selected:<br /><?php echo $_POST['facility']?><br />
-Results for Seneca Item <?php echo $_POST['thisitem'];?></span></p>
+Hospital Selected:<br /><?php if($_POST['facility'] != "ALL"){
+	echo $_POST['facility'];
+    }else{
+    echo "All Facilities";
+    }?><br />
+Results for Seneca Item <?php echo $_POST['thisitem'];?><br />
+<div id="descrplace" style="font: italic 20px Calibri,Helvetica,sans-serif;position: relative;top: 50px;"></div>
+</span>
+<script>
+var item = "<?php echo $item;?>";
+$.ajax({
+	type: 'POST',
+	url: 'http://www1.senecamedical.com/product_eval/getdescription.php',
+	dataType: 'json',
+	data:{item: item},
+	success: function(response){
+		$('#descrplace').html(response.descr);
+	}
+	});
+</script>
+</p>
 <div id="chartmain">
 
   <div id="chartwrapper">
@@ -121,6 +140,7 @@ function createCharts(){
 	}
 		}    
 	});
+
 	
 }
 

@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <?php
-include_once 'logging.php';
+if(isset($_POST['menubtn'])){
+	header("Location: prodeval_menu.php");
+	exit();
+}
+$loadxml = simplexml_load_file('evalconfig.xml');
 
-$log = new Logging();
-$log->lfile('/www/salessvr/htdocs/product_eval/logs/evallog.txt');
-$user = 'PHPUSER';
-$password = 'phpusri7';
+$user = $loadxml->userid;
+$password = $loadxml->password;
 
-$host = 'S106B0CP';
+$host = $loadxml->host;
 
 $conn = db2_connect($host, $user, $password);
 if($conn){
@@ -64,9 +66,14 @@ if(isset($_POST['facility'])){
 <body>
 <div id="menu">
 <p>Select the facility, then select the item to review.</p>
-<p><a href="prodeval_menu.php" class="btn-style">Main Menu</a><a href="#" class="btn-style" onclick="printscreen();">Print</a></p>
-<form name="filtered" action="" method="post">
 
+<form name="filtered" action="" method="post">
+<table>
+	<tr>
+		<td><input type="submit" name="menubtn" id="menubtn" value="Main Menu"/></td>
+		<td><a href="#" onclick="printscreen();">Print</a></td>
+	</tr>
+</table>
 <table id="filters">
 	<tr>
 		<th>Facility</th>

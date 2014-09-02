@@ -14,7 +14,12 @@ if($conn){
 	$evalrs = array();
 	$yesctr = 0;
 	$noctr = 0;
+	if($hospital == "ALL"){
+		$questqry = "select stmtid,evalchoic from r50modsdta.prdeval where evalitem='".$getitem."' order by stmtid,evalchoic";
+		
+	}else{
 	$questqry = "select stmtid,evalchoic from r50modsdta.prdeval where facname='".$hospital."' and evalitem='".$getitem."' order by stmtid,evalchoic";
+	}
 	
 	$qryrs = db2_exec($conn, $questqry);
 	if($qryrs){

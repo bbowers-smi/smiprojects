@@ -1,6 +1,18 @@
 <?php
 
-$conn = db2_connect('S106B0CP', 'WS03', 'lauren16');
+if(isset($_POST['menubtn'])){
+	header("Location: prodeval_menu.php");
+	exit();
+}
+
+$loadxml = simplexml_load_file('evalconfig.xml');
+
+$user = $loadxml->userid;
+$password = $loadxml->password;
+
+$host = $loadxml->host;
+
+$conn = db2_connect($host, $user, $password);
 
 $evalid = 1;
 if($conn){

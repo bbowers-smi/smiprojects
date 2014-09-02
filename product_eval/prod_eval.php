@@ -14,9 +14,14 @@
 </head>
 <body>
 <?php 
-$user = 'ws03';
+$loadxml = simplexml_load_file('evalconfig.xml');
 
-$conn = db2_connect('S106B0CP', 'ws03', 'lauren16');
+$user = $loadxml->userid;
+$password = $loadxml->password;
+
+$host = $loadxml->host;
+
+$conn = db2_connect($host, $user, $password);
 if($conn){
 	$qry = "select stmtid,stmttxt from r50modsdta.prdstmt where stmtdel='A'";
 	
@@ -48,7 +53,7 @@ if(isset($_COOKIE['holdvals'])){
 <?php 
 $curr_date = date('m/d/Y');
 ?>
-<form action="process.php" name="evalform" class="mainform" method="post">
+<form action="process.php" name="evalform" class="mainform" method="post" onsubmit="submitItem()">
 <input type="hidden" name="salesm" value="<?php echo $user;?>"></input>
 <div id="sect1">
 <table>
@@ -108,8 +113,9 @@ echo "<input type=\"hidden\" name=\"nbrquestions\" value=".($questionctr)." ></i
 Additional Comments:</span><br />
 <textarea rows="4" cols="60" name="comments"></textarea>
 </p>
-<input class="btn-style" type="button" name="btn" value="Submit" onclick="submitItem()" ></input>
-<a href="prodeval_menu.php" class="btn-style">Main Menu</a>
+<input type="submit" name="btn" id="sbmbtn" value="Submit"/>
+<input type="submit" name="menubtn" id="menubtn" value="Main Menu"/>
+
 </div>
 </form>
 </div>
