@@ -42,7 +42,7 @@ Hospital Selected:<br /><?php if($_POST['facility'] != "ALL"){
     }else{
     echo "All Facilities";
     }?><br />
-Results for Seneca Item <?php echo $_POST['thisitem'];?><br />
+Results for Seneca Item <?php echo $_POST['thisitem'];?><span id="manf"></span><br />
 <div id="descrplace" style="font: italic 20px Calibri,Helvetica,sans-serif;position: relative;top: 50px;"></div>
 </span>
 <script>
@@ -54,6 +54,7 @@ $.ajax({
 	data:{item: item},
 	success: function(response){
 		$('#descrplace').html(response.descr);
+		$('#manf').html("  HCS Item "+response.mfgnbr);
 	}
 	});
 </script>
